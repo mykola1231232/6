@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Музичний Плейлист</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+    button {
+      margin: 10px 0;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎵 Мій Плейлист</h1>
+  <button onclick="loadSongs()">Завантажити пісні</button>
+  <button onclick="playRandom()">Випадкова пісня</button>
+  <ul id="songList"></ul>
+  <p id="randomSong"></p>
+
+  <script>
+    async function loadSongs() {
+      const response = await fetch("songs.txt");
+      const text = await response.text();
+      const songs = text.trim().split("\n");
+      const list = document.getElementById("songList");
+      list.innerHTML = "";
+      songs.forEach(song => {
+        const li = document.createElement("li");
+        li.textContent = song;
+        list.appendChild(li);
+      });
+      window.songArray = songs;
+    }
+
+    function playRandom() {
+      if (window.songArray && window.songArray.length > 0) {
+        const random = window.songArray[Math.floor(Math.random() * window.songArray.length)];
+        document.getElementById("randomSong").textContent = "🔊 " + random;
+      } else {
+        alert("Спочатку завантажте пісні.");
+      }
+    }
+  </script>
+</body>
+</html>
